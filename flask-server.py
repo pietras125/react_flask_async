@@ -40,5 +40,11 @@ def send():
     return "<p> Wysłałem dane do react </p>"
 
 
+@socketio.on("chat_message")
+def handle_chat_message(data):
+    content = data.get("content")
+    print(f"Received message: {content}")
+
+
 if __name__ == "__main__":
     app.run(debug=True)

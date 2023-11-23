@@ -5,6 +5,7 @@ const socket = openSocket("http://127.0.0.1:5000");
 
 const ChatComponent = () => {
   const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -38,11 +39,24 @@ const ChatComponent = () => {
     };
   }, []);
 
+  const handleSendMessage = () => {
+    // Wysyłanie wiadomości "hejka" po kliknięciu przycisku
+    socket.emit("chat_message", { content: inputValue });
+    // Czyszczenie wartości inputu po wysłaniu wiadomości
+    setInputValue("");
+  };
+
   return (
     <div>
       {messages.map((message, index) => (
         <div key={index}>{message}</div>
       ))}
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+      <button onClick={handleSendMessage}>Wyślij</button>
     </div>
   );
 };
